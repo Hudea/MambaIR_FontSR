@@ -1,0 +1,50 @@
+name: fontsr_mambairv2light_lr32_level1
+
+data:
+  level: level1
+  spec:
+    font:
+      font_path: resources/shufei.ttf
+    image:
+      hr_size: 128
+      lr_size: 32
+      hr_font_size: 128
+      lr_font_size: 32
+      pad_mode: center
+    charset:
+      char_map_path: resources/meta/shufei.txt
+      train_ratio: 0.9
+      split_seed: 42
+      split_mode: variant
+      forced_val_chars:
+        - "\u6c38"
+    stroke:
+      return_stroke_vector: false
+
+model:
+  type: MambaIRv2Light
+  upscale: 4
+  in_chans: 1
+  img_size: 32
+  embed_dim: 48
+  d_state: 8
+  depths: [4, 4, 4, 4]
+  num_heads: [4, 4, 4, 4]
+  window_size: 8
+  inner_rank: 32
+  num_tokens: 64
+  convffn_kernel_size: 5
+  mlp_ratio: 1.0
+  upsampler: pixelshuffledirect
+  resi_connection: 1conv
+  img_range: 1.0
+
+training:
+  epochs: 200
+  batch_size: 16
+  lr: 2.0e-4
+  lr_milestones: [100, 150, 175]
+  gamma: 0.5
+  seed: 42
+  num_workers: 4
+  save_every_n_epochs: 10
